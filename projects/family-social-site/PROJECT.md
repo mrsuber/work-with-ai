@@ -5,12 +5,18 @@
 ## Purpose
 
 Started as a family/social networking site, but has grown well beyond that
-name — the codebase now includes a "Mission Control" operations system
-(department/personnel/asset/financial dashboards, calendar, diary), a
-restaurant management module (menu, inventory, POS, orders), an Islamic
-LMS (courses, lessons, assignments), and global asset/landmark tracking —
-alongside the original family/social features. Treat the repo name as
-historical, not descriptive of current scope.
+name. **This is the actual source of truth for the whole personal mission**
+(see `MISSION.md` at the root of `work-with-ai`) — the codebase includes a
+"Mission Control" operations system (department/personnel/asset/financial
+dashboards, calendar, diary), a restaurant management module (menu,
+inventory, POS, orders), an Islamic LMS (courses, lessons, assignments),
+global asset/landmark tracking, and — critically —
+`MASTER-MISSION-DOCUMENT.md`, which lays out the **Islamic Governance
+Framework**: Islam as the deliberately-chosen, actual governing/operating
+system for SuberCraftex and SuberFood (business ethics, employee relations,
+decision-making, long-term space-governance vision), not a personal add-on
+alongside them. Treat the repo name as historical, not descriptive of
+current scope.
 
 ## Context
 

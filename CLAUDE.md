@@ -5,7 +5,10 @@ here. It exists so that referencing this repo — opening a session in this
 directory, or just naming a project that lives in it — is enough to pick up
 exactly where things left off, instead of re-explaining context every time.
 
-**Read this file, then `INDEX.md`, before doing anything else in this repo.**
+**Read this file, then `MISSION.md`, then `INDEX.md`, before doing anything
+else in this repo.** `MISSION.md` is the "who/what/why" behind the
+Private/Personal projects — read it before making any call on priority or
+sequencing.
 
 `INDEX.md` splits projects into **Private/Personal** and **Client** — keep
 that distinction when adding new ones. It matters for things like tone,
@@ -135,6 +138,16 @@ shape). Either way it still gets a row in `INDEX.md` and a
 pointer (where the repo is, how to clone it) rather than the full journal,
 so there's still exactly one place to look to find out "what am I working
 on and is it set up."
+
+## Scope boundary
+
+Only work within repos that are explicitly given and tracked in `INDEX.md`
+— the ones actually cloned locally. Don't explore, read, or touch other
+directories or repositories on this machine on your own initiative, even
+ones that look related by name. (Full rationale in `MISSION.md` — this
+came up concretely with several unrelated local `subercraftex`-named
+folders under different remotes/accounts; they were flagged to the user,
+not poked at further.)
 
 ## Related setup already in place
 

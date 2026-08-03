@@ -9,6 +9,15 @@ product management, order processing, supplier integration, delivery
 tracking, and customer reviews — a production-oriented retail business
 system, not just a storefront.
 
+**Bigger picture** (see `MISSION.md` and
+`family-social-site-pes-01`'s `MASTER-MISSION-DOCUMENT.md`): SuberCraftex
+is envisioned as a vertically-integrated manufacturing ecosystem (crafts →
+furniture → cars → spacecraft, per `CURRICULUM_MASTER_PLAN.md`), explicitly
+governed by Islamic principles (no riba, zakat built into the profit model,
+Shura-based decisions) — not just a normal e-commerce business. See
+[Islamic Study & Practice](../islamic-study/PROJECT.md) for why that's not
+incidental.
+
 ## Context
 
 Two repos, one product:
