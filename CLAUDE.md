@@ -7,6 +7,11 @@ exactly where things left off, instead of re-explaining context every time.
 
 **Read this file, then `INDEX.md`, before doing anything else in this repo.**
 
+`INDEX.md` splits projects into **Private/Personal** and **Client** — keep
+that distinction when adding new ones. It matters for things like tone,
+what's okay to reference across projects, and billing/scope boundaries on
+client work; don't blur the two without the user saying so.
+
 ## The first move, every time
 
 This applies whether this is the machine that's always run this project, or
