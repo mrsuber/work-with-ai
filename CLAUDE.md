@@ -137,6 +137,17 @@ on and is it set up."
   the skills referenced above (brainstorming, writing-plans,
   test-driven-development, etc.) come from it and are available in every
   session automatically.
+- **`figma`** Claude Code plugin (user scope, installed 2026-08-03) —
+  official Figma MCP server + skills (`figma-generate-design`,
+  `figma-create-new-file`, `figma-generate-library`, etc.), for making
+  YouTube cover/thumbnail designs. Installed via
+  `claude plugin install figma@claude-plugins-official`; OAuth login done
+  (`claude mcp get "plugin:figma:figma"` → Connected). **Not yet verified
+  with a real tool call** — the plugin was installed mid-session, and
+  Figma's own setup guide says a Claude Code restart is needed before its
+  tools actually show up. First session after a restart should do an actual
+  test (e.g. create a small sample file) before relying on it for real
+  thumbnail work.
 - Claude's own memory system also holds a pointer to this repo, so it's
   recognized even from a session that didn't start in this directory —
   naming a project here should be enough.
