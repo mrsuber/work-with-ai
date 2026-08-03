@@ -58,12 +58,16 @@ worked on beyond what the README/package.json show.
 
 **Requirements**: Node.js + npm for both. Web additionally needs Stripe +
 Supabase credentials (see `.env.example` in the web repo). App needs Expo/EAS
-tooling for builds.
+tooling for builds. For the curriculum's Fusion 360 design/CAM work (see
+below): Autodesk Fusion (Personal/free edition works), `uv`/`uvx`, and the
+`fusion360` MCP server.
 
 **Verify**:
 ```bash
 test -d ~/dev/SuberCraftex-ecommerceWeb/.git && echo "web cloned"
 test -d ~/dev/SuberCraftex-ecommerceApp/.git && echo "app cloned"
+claude mcp get fusion360   # should show "Status: ✔ Connected"
+lsof -iTCP:9876 -sTCP:LISTEN -P -n   # should show an Autodesk process (add-in running inside Fusion)
 ```
 
 **Setup**:
@@ -72,6 +76,43 @@ cd ~/dev/SuberCraftex-ecommerceWeb && npm install && cp .env.example .env   # fi
 cd ~/dev/SuberCraftex-ecommerceApp && npm install
 ```
 
+### Fusion 360 MCP (design/CAM tooling)
+
+For the CAD/CAM work in `CURRICULUM_MASTER_PLAN.md` (Fusion 360 design,
+CAM/G-code generation). Set up 2026-08-03:
+
+- **Official Autodesk MCP server is NOT available** — it's gated to paid
+  Fusion subscriptions (Preferences → General → API has no "Fusion MCP
+  Server" option at all on Fusion Personal/free, which is what's installed
+  here). Confirmed by actually checking, not assumed.
+- Used the community **`faust-machines/fusion360-mcp-server`** instead
+  (MIT, 65 stars, actively maintained, 89 tools, tested with Claude Code) —
+  vetted before installing: checked stars/forks/issues/license, read the
+  actual add-in source (clean, localhost-only TCP, no obfuscation).
+  Cloned to `~/dev/fusion360-mcp-server`.
+- **Known bug worked around**: the package declares `mcp>=1.0` with no
+  upper bound; the `mcp` Python SDK's 2.0.0 release broke its API
+  (`Server.list_tools` no longer exists), and `uvx` resolves latest by
+  default. Fixed by pinning: registered as
+  `uvx --with "mcp<2.0" fusion360-mcp-server --mode socket` (1.26.0 is what
+  the project's own `uv.lock` was built/tested against). If this package
+  releases a fixed version later, the `--with "mcp<2.0"` override can
+  probably be dropped — check first before assuming still needed.
+- Architecture: Fusion360MCP **add-in** (copied to
+  `~/Library/Application Support/Autodesk/Autodesk Fusion 360/API/AddIns/Fusion360MCP`)
+  runs inside Fusion, listens on `localhost:9876`; the MCP server itself is
+  a separate stdio process Claude Code spawns via `uvx`. **Both pieces
+  needed**: Fusion must be running with the add-in started (Shift+S →
+  Add-Ins → Fusion360MCP → Run, or set "Run on Startup") *and* registered
+  with `claude mcp add`.
+- Registered at **user scope** (`claude mcp get fusion360` → Connected) —
+  available in any project, not just this one.
+- **Not yet verified with a real tool call** — added mid-session, and (same
+  as the `figma` plugin) new MCP tools don't show up in an already-running
+  Claude Code session. First session after a restart: call `ping` (should
+  return `{"pong": true}`) with Fusion running and the add-in started,
+  before relying on it for real design work.
+
 ## Work Log
 
 ### 2026-08-03 — Indexed
@@ -79,3 +120,13 @@ cd ~/dev/SuberCraftex-ecommerceApp && npm install
 - Discovered and flagged three other local `subercraftex` folders under
   different remotes/accounts with real uncommitted work — left untouched,
   needs the user's input on what they actually are before any action.
+
+### 2026-08-03 — Fusion 360 MCP set up
+- Confirmed official Autodesk MCP server unavailable on Fusion Personal
+  (free) — no such preference exists in Preferences → General → API.
+- Installed community `faust-machines/fusion360-mcp-server` instead after
+  vetting it. Hit and fixed a real dependency bug (unpinned `mcp>=1.0`
+  breaking against `mcp` 2.0.0) — see Environment section above for the
+  fix. Registered at user scope, `claude mcp get fusion360` shows
+  Connected. Not yet verified with an actual tool call — pending a Claude
+  Code restart (tools don't load into an already-running session).
