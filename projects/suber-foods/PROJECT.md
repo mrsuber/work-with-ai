@@ -21,6 +21,12 @@ workflow: scope what Suber Foods actually is (product? service? which part
 of production/processing/consumption is the focus?) using PRIME before
 building anything.
 
+## Environment
+
+None yet — nothing has been scoped, so there's nothing to require. Fill this
+in once Think/Plan makes clear what the project actually needs (a codebase?
+a spreadsheet/model? specific accounts or tools?).
+
 ## Work Log
 
 ### 2026-08-03 — Project created

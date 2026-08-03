@@ -9,15 +9,38 @@ exactly where things left off, instead of re-explaining context every time.
 
 ## The first move, every time
 
-1. Open `INDEX.md`. Find the project being discussed (or figure out it's new).
+This applies whether this is the machine that's always run this project, or
+a brand new machine that just cloned this repo for the first time — the
+steps are the same either way, which is the point.
+
+1. Open `INDEX.md`. Find the project being discussed (or figure out it's
+   new).
 2. **New project** → create `projects/<slug>/PROJECT.md` from
    `projects/_TEMPLATE.md`, add a row to `INDEX.md`, and start at **Think**
-   below.
+   below. Its Environment section starts empty — there's nothing to verify
+   yet, and setup requirements get written down as they're discovered during
+   Think/Plan, not guessed upfront.
 3. **Continuing project** → read `projects/<slug>/PROJECT.md` in full,
    especially its Work Log, before responding. Don't ask the user to
    re-explain what's already written down there.
+4. **Environment check (continuing projects only, every session)** — before
+   doing any real work, run that project's Environment → Verify steps.
+   - All good → say nothing about it, just proceed.
+   - Something missing/broken → run the Setup steps to fix it. For anything
+     system-wide, destructive, or requiring credentials, confirm with the
+     user first rather than just doing it (standard practice, not special
+     to this repo) — but routine stuff (installing a project's own declared
+     dependencies, creating a venv) doesn't need a confirmation each time.
+   - Setup steps are missing, wrong, or incomplete for what's actually on
+     this machine → fix them, and update the Environment section in
+     `PROJECT.md` so the next machine doesn't hit the same gap. This is the
+     mechanism that makes a fresh clone on a new computer actually work —
+     if this step gets skipped, that guarantee quietly breaks.
+   - Only once the environment is actually verified working, move on to
+     what the user actually asked for.
 
-Never skip straight to building without doing step 1.
+Never skip straight to building without doing step 1 (and step 4, for a
+continuing project).
 
 ## The crew
 
@@ -28,8 +51,10 @@ extended past the original 5) from the workflow in
 `projects/_reference/how-to-use-claude-video.md`:
 
 1. **Remember** — load context first (`INDEX.md` + the project's
-   `PROJECT.md`). This is the step the video's "Projects" tool covers; here
-   it's just reading the file before talking.
+   `PROJECT.md`), then run its Environment check (see "The first move"
+   above). This is the step the video's "Projects" tool covers; here it's
+   reading the file *and* confirming the environment it describes is
+   actually true on this machine before trusting it.
 2. **Think** — brainstorm/scope a fuzzy idea into something concrete before
    building anything. Use the `brainstorming` skill (superpowers plugin) for
    anything non-trivial. Apply **PRIME** (below) to figure out what's
@@ -86,14 +111,25 @@ work-with-ai/
   projects/
     _TEMPLATE.md          — copy this to start a new project
     <project-slug>/
-      PROJECT.md          — that project's Purpose/Context/Work Log
+      PROJECT.md          — Purpose/Context/Environment/Work Log
       ...                 — actual project files, code, docs, whatever it needs
 ```
 
 Keep each project's own working files inside its `projects/<slug>/` folder.
-`PROJECT.md` is the journal (mirrors the pattern used in the
-`davinci-resolve-mcp` repo's `RESOLVE_MCP_JOURNAL.md`) — it's read at the
-start of a session and appended to at the end, not a one-time README.
+`PROJECT.md` is the journal — read at the start of a session, appended to at
+the end, not a one-time README. Its **Environment** section (Requirements /
+Verify / Setup) is what step 4 of "The first move" runs — this is what lets
+a brand new machine clone this repo, pick a project, and actually get to
+working state without the human re-explaining setup from scratch.
+
+A project doesn't have to live inside this repo — some are big enough to
+warrant their own repo (e.g. `davinci-resolve-mcp`, which has its own
+`RESOLVE_MCP_JOURNAL.md` using this same Purpose/Environment/Work Log
+shape). Either way it still gets a row in `INDEX.md` and a
+`projects/<slug>/PROJECT.md` — for an external repo, that file is a thin
+pointer (where the repo is, how to clone it) rather than the full journal,
+so there's still exactly one place to look to find out "what am I working
+on and is it set up."
 
 ## Related setup already in place
 
