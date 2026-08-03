@@ -1,0 +1,11 @@
+# Never commit the actual voice data or API key
+.env
+__pycache__/
+*.pyc
+samples/*
+!samples/.gitkeep
+output/*
+!output/.gitkeep
+*.mp3
+*.wav
+*.m4a

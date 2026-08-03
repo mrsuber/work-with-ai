@@ -8,6 +8,7 @@ session in this repo.
 |---|---|---|---|
 | Suber Foods | 🆕 new — not yet brainstormed | Food production, processing, and consumption business | [`projects/suber-foods/`](projects/suber-foods/PROJECT.md) |
 | DaVinci Resolve MCP | ✅ working | Claude Code control of DaVinci Resolve via MCP + in-app bridge | [`projects/davinci-resolve-mcp/`](projects/davinci-resolve-mcp/PROJECT.md) → full journal in its own repo |
+| AI Voiceover | 🆕 scaffolded, needs API key + voice samples | Clone the user's voice (ElevenLabs) to generate voiceovers from transcripts | [`projects/ai-voiceover/`](projects/ai-voiceover/PROJECT.md) |
 
 ## Status legend
 
