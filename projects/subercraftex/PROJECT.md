@@ -163,9 +163,14 @@ Set up 2026-08-04:
   `bpy.ops.wm.save_userpref()` + `bpy.ops.wm.save_homefile()` so the
   correct port is baked into the default startup file for next time.
 - Registered at **user scope** (`claude mcp get blender` → Connected).
-- **Verified with a real tool call** — `mcp__blender__get_scene_info`
-  returned the live default scene (Cube/Light/Camera) from the running
-  4.5.12 instance on port 9877. Working end to end as of 2026-08-04.
+- **Verified with real tool calls, both read and write**:
+  `mcp__blender__get_scene_info` returned the live default scene
+  (Cube/Light/Camera); `mcp__blender__execute_blender_code` then generated
+  actual geometry (a beveled torus with a material, 768 verts/edges/faces)
+  and `mcp__blender__get_object_info` + `mcp__blender__get_viewport_screenshot`
+  confirmed it existed and rendered correctly, before deleting it again to
+  leave the scene clean. Not just "Connected" in config — genuinely
+  generates models end to end, as of 2026-08-04.
 
 ## Work Log
 
