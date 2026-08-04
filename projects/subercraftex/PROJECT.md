@@ -72,8 +72,9 @@ claude mcp get fusion360   # should show "Status: ✔ Connected"
 lsof -iTCP:9876 -sTCP:LISTEN -P -n   # should show an Autodesk process (add-in running inside Fusion)
 claude mcp get blender     # should show "Status: ✔ Connected"
 lsof -iTCP:9877 -sTCP:LISTEN -P -n   # should show a Blender process (addon socket server running inside Blender)
-# If nothing's listening on 9877, Blender.app needs to actually be running (GUI, not just installed) —
-# open it: `open -a /Applications/Blender.app`
+launchctl list | grep com.subercraftex.blender-mcp   # should show a PID (0 = last run exited clean) — confirms auto-start-on-login is registered
+# If nothing's listening on 9877 and the launchctl line above shows nothing, the LaunchAgent isn't loaded —
+# see "Auto-start on login" below for how to (re)install it.
 ```
 
 **Setup**:
@@ -172,6 +173,65 @@ Set up 2026-08-04:
   leave the scene clean. Not just "Connected" in config — genuinely
   generates models end to end, as of 2026-08-04.
 
+#### Auto-start on login
+
+Blender now launches automatically at login with the addon's server already
+up on 9877 — no manual "open Blender" step needed before the `mcp__blender__*`
+tools work. Done via a macOS **LaunchAgent**, not the addon's own
+"Auto-Start Server" checkbox alone, because that checkbox only helps once
+Blender is already open — something still has to open Blender itself, and
+(see the startup-race gotcha above) a plain launch isn't reliably enough to
+get the port right either.
+
+- **Script**: `projects/subercraftex/scripts/blender_mcp_startup.py` (in
+  this repo, so it's versioned and survives a fresh machine setup). Same
+  stop/set-port/start/save logic used for the initial verification, just
+  saved somewhere permanent instead of the session scratchpad it first ran
+  from — re-asserts port 9877 and a running server every launch, rather
+  than trusting the addon's own auto-start to win the race against Fusion
+  360's 9876 every time.
+- **LaunchAgent**: `~/Library/LaunchAgents/com.subercraftex.blender-mcp.plist`
+  (outside this repo — macOS user-level config, not project source — so
+  it's reproduced here instead). `RunAtLoad` only, no `KeepAlive`, so
+  quitting Blender manually during the day doesn't fight you by relaunching
+  it — it only auto-starts at login.
+- Logs to `~/Library/Logs/blender-mcp-launchagent.log`.
+
+To (re)install on this or a new machine:
+```bash
+mkdir -p ~/Library/LaunchAgents
+cat > ~/Library/LaunchAgents/com.subercraftex.blender-mcp.plist <<'EOF'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.subercraftex.blender-mcp</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Applications/Blender.app/Contents/MacOS/Blender</string>
+        <string>--python</string>
+        <string>/Users/apple/dev/work-with-ai/projects/subercraftex/scripts/blender_mcp_startup.py</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <false/>
+    <key>StandardOutPath</key>
+    <string>/Users/apple/Library/Logs/blender-mcp-launchagent.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/apple/Library/Logs/blender-mcp-launchagent.log</string>
+</dict>
+</plist>
+EOF
+launchctl load -w ~/Library/LaunchAgents/com.subercraftex.blender-mcp.plist
+```
+
+**Known side effect**: Blender's window visibly opens at every login (no
+headless/minimized mode for an arbitrary macOS app via launchd) — expected,
+not a bug. To stop auto-starting:
+`launchctl unload -w ~/Library/LaunchAgents/com.subercraftex.blender-mcp.plist`.
+
 ## Work Log
 
 ### 2026-08-03 — Indexed
@@ -206,5 +266,15 @@ Set up 2026-08-04:
 - Verified end-to-end with a live `mcp__blender__get_scene_info` call
   against the running Blender instance — genuinely connected, not just
   "Connected" in `claude mcp get`.
+- Strengthened that verification with an actual generation test: created a
+  beveled torus + material via `execute_blender_code`, confirmed it via
+  `get_object_info` and a viewport screenshot, then cleaned it up. Confirms
+  write access works, not just reads.
+- Set Blender to auto-start at login (see "Auto-start on login" in the
+  Environment section) via a LaunchAgent, so the MCP tools work without a
+  manual "open Blender" step first. Script lives in this repo
+  (`scripts/blender_mcp_startup.py`); the LaunchAgent plist itself is
+  macOS user config outside the repo, reproduced in the docs above so a
+  fresh machine can recreate it.
 - Not yet used for actual curriculum/product work — this session was setup
   and verification only.
