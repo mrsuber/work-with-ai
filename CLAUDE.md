@@ -160,12 +160,19 @@ not poked at further.)
   `figma-create-new-file`, `figma-generate-library`, etc.), for making
   YouTube cover/thumbnail designs. Installed via
   `claude plugin install figma@claude-plugins-official`; OAuth login done
-  (`claude mcp get "plugin:figma:figma"` → Connected). **Not yet verified
-  with a real tool call** — the plugin was installed mid-session, and
-  Figma's own setup guide says a Claude Code restart is needed before its
-  tools actually show up. First session after a restart should do an actual
-  test (e.g. create a small sample file) before relying on it for real
-  thumbnail work.
+  (`claude mcp get "plugin:figma:figma"` → Connected). **Verified working
+  2026-08-06** — built a real 1280x720 YouTube thumbnail end to end
+  (`create_new_file` → `upload_assets` → `use_figma` → `get_screenshot` →
+  `download_assets`); see `projects/islamic-study/PROJECT.md`'s 2026-08-06
+  entry for the actual workflow used.
+  **Real constraint to know before starting**: this Figma account is
+  Starter tier / View seat — capped at **6 MCP tool calls per month**
+  (`whoami`, `generate_figma_design`, `add_code_connect_map` are exempt;
+  everything else, including `create_new_file`, `use_figma`,
+  `get_screenshot`, `upload_assets`, `download_assets`, counts). One
+  thumbnail used 5 of the 6. Plan calls accordingly (batch as much as
+  possible into single `use_figma` scripts) or upgrade the seat if
+  thumbnails become a regular per-video task.
 - Claude's own memory system also holds a pointer to this repo, so it's
   recognized even from a session that didn't start in this directory —
   naming a project here should be enough.

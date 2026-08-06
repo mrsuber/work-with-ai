@@ -26,6 +26,13 @@ Fully working as of 2026-08-03: MCP server registered in Claude Code (user
 scope), in-app bridge connects to the running (free-edition) Resolve
 install, verified against a live project.
 
+First real editing session (not just a connection test) done 2026-08-04 —
+color + audio correction pass on a real clip. Surfaced real gotchas (macOS
+file-access restrictions on Downloads, an MCP color-grading bug, render
+workflow quirks) — all logged in `RESOLVE_MCP_JOURNAL.md`'s 2026-08-04 entry
+in the project's own repo. Read that entry before the next editing session;
+it'll save re-discovering the same traps.
+
 ## Environment
 
 **Requirements** — the repo cloned locally; a Python venv inside it; a
